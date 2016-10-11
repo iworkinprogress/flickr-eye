@@ -12,8 +12,7 @@ import UIKit
 // @see: http://stackoverflow.com/questions/24231680/loading-downloading-image-from-url-on-swift
 
 extension UIImageView {
-    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
-        contentMode = mode
+    func downloadedFrom(url: URL) {
         if let image = ImageCache.shared.image(at: url.absoluteString) {
             self.image = image
         } else {

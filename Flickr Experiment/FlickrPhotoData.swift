@@ -9,7 +9,7 @@
 import UIKit
 
 enum PhotoSize {
-    case square
+    case thumbnail
     case large
 }
 
@@ -34,7 +34,14 @@ class FlickrPhotoData: NSObject {
     
     //MARK: - Images
     func thumbnailURL() -> URL? {
-        if let path = self.imagePath(size: .square) {
+        if let path = self.imagePath(size: .thumbnail) {
+            return URL(string: path)
+        } else {
+            return nil
+        }
+    }
+    func imageURL() -> URL? {
+        if let path = self.imagePath(size: .large) {
             return URL(string: path)
         } else {
             return nil
@@ -42,7 +49,7 @@ class FlickrPhotoData: NSObject {
     }
     func imagePath(size:PhotoSize) -> String? {
         if self.farm != nil && self.server != nil && self.id != nil && self.secret != nil {
-            let sizeSpecifier = size == .square ? "_q" : "_b"
+            let sizeSpecifier = size == .thumbnail ? "_n" : "_b"
             return "https://farm\(self.farm!).staticflickr.com/\(self.server!)/\(self.id!)_\(self.secret!)\(sizeSpecifier).jpg"
         } else {
             return nil
