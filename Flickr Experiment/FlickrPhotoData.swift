@@ -20,6 +20,11 @@ class FlickrPhotoData: NSObject {
     var server:String!
     var title:String!
     
+    // Details
+    var author:String?
+    var date:Date?
+//    var comments = [FlickrPhotoComment]()
+    
     // Secondary info
     var authorName:String?
     
@@ -30,6 +35,18 @@ class FlickrPhotoData: NSObject {
         self.secret = dictionary["secret"] as! String
         self.farm = dictionary["farm"] as! NSNumber
         self.server = dictionary["server"] as! String
+    }
+    
+    func hasDetails() -> Bool {
+        return author != nil && date != nil
+    }
+    
+    func fetchDetails(completion: @escaping (_ data:FlickrPhotoData) -> Void) {
+//        FlickrAPI
+    }
+    
+    func dateAsString() -> String {
+        return "9:99am on Saturday, August 21, 2016"
     }
     
     //MARK: - Images

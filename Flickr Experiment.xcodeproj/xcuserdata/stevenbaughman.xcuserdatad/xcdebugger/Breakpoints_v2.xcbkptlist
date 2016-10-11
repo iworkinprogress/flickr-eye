@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Flickr Experiment/FlickrPhotoCollectionViewCell.swift"
-            timestampString = "497892453.759816"
+            timestampString = "497895543.553577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "zoomIn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -60,11 +60,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Flickr Experiment/FlickrPhotoCollectionViewCell.swift"
-            timestampString = "497892955.784531"
+            timestampString = "497895543.553577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "zoomOut()"
             landmarkType = "7">
          </BreakpointContent>

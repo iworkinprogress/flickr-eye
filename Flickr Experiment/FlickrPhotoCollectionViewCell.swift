@@ -17,6 +17,11 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     var isZoomedIn:Bool = false
     
     @IBOutlet var topPadding:NSLayoutConstraint!
+    @IBOutlet var scrollView:UIScrollView!
+    @IBOutlet var titleLabel:UILabel!
+    @IBOutlet var authorLabel:UILabel!
+    @IBOutlet var dateLabel:UILabel!
+    @IBOutlet var dateLine:UIView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -27,6 +32,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.index = index
         if let validData = data {
             self.data = validData
+            self.titleLabel.text = validData.title
             if isZoomedIn {
                 self.zoomIn()
             } else {
@@ -48,6 +54,25 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             self.imageView.downloadedFrom(url: imageURL)
         }
         self.topPadding.constant = self.zoomedInOffset()
+        self.scrollView.isScrollEnabled = true
+        self.scrollView.isUserInteractionEnabled = true
+        self.scrollView.contentOffset = CGPoint.zero
+        
+        self.showLabels()
+        
+        // Get additional photo details if they don't exist
+        if let validData = self.data {
+            if validData.hasDetails() {
+                self.updateCellLabels()
+            } else {
+                validData.fetchDetails(completion: { (photoData) in
+                    if(photoData == self.data) {
+                        // still looking at same photo, update contents
+                        self.updateCellLabels()
+                    }
+                })
+            }
+        }
     }
     
     func zoomedInOffset() -> CGFloat {
@@ -68,6 +93,34 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             self.imageView.downloadedFrom(url: thumbnailURL)
         }
         self.topPadding.constant = 0
+        self.scrollView.isScrollEnabled = false
+        self.scrollView.isUserInteractionEnabled = false
+        self.scrollView.contentOffset = CGPoint.zero
+        self.hideLabels()
+    }
+    
+    //MARK: - Labels
+    func updateCellLabels() {
+        if let validData = self.data {
+            if validData.hasDetails() {
+                self.authorLabel.text = "by \(validData.author)"
+                self.dateLabel.text = validData.dateAsString()
+            }
+        }
+    }
+    
+    func hideLabels() {
+        self.titleLabel.alpha = 0
+        self.authorLabel.alpha = 0
+        self.dateLabel.alpha = 0
+        self.dateLine.alpha = 0
+    }
+    
+    func showLabels() {
+        self.titleLabel.alpha = 1
+        self.authorLabel.alpha = 1
+        self.dateLabel.alpha = 1
+        self.dateLine.alpha = 1
     }
     
     //MARK: - Notifications

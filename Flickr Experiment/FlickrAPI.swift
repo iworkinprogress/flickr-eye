@@ -13,7 +13,8 @@ let kFlickrPhotosPerPage:Int = 100
 class FlickrAPI: NSObject {
     
     let kFlickrPath = "https://api.flickr.com/services/rest/?method="
-    let kFlickrMethod = "flickr.photos.getRecent"
+    let kFlickrGetPhotosMethod = "flickr.photos.getRecent"
+    let kFlickrGetDetailsMethod = "flickr.photos.getInfo"
     let kFlickrKey = "8617b22260a92e5550bddcdcfec95f7f"
     let kFlickrFormat = "json"
     
@@ -52,12 +53,44 @@ class FlickrAPI: NSObject {
         }
     }
     
+    //MARK: - Get Details
+    func fetchDetails(data:FlickrPhotoData, completion: @escaping (_ photoDetails:NSDictionary?) -> Void) {
+        if let flickrURL = URL(string: self.detailsPath(for:data)) {
+            
+            URLSession.shared.dataTask(with: flickrURL, completionHandler: { (data, response, error) in
+                if let data = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! NSDictionary
+                        
+                        if let photo = json["photo"] as? NSDictionary {
+                            completion(photo)
+                        }
+                        
+                    } catch let error as NSError? {
+                        NSLog("Error loading Flickr Photo Details: \(error?.localizedDescription)")
+                        completion(nil)
+                    }
+                }
+            }).resume()
+        }
+    }
+    
     //MARK: - Paths
     func path(for page:NSInteger) -> String {
         var path = "\(kFlickrPath)"
-        path += "&method=\(kFlickrMethod)"
+        path += "&method=\(kFlickrGetPhotosMethod)"
         path += "&page=\(page)"
         path += "&per_page=\(kFlickrPhotosPerPage)"
+        path += "&api_key=\(kFlickrKey)"
+        path += "&format=\(kFlickrFormat)"
+        path += "&nojsoncallback=1"
+        return path
+    }
+    
+    func detailsPath(for data:FlickrPhotoData) -> String {
+        var path = "\(kFlickrPath)"
+        path += "&method=\(kFlickrGetDetailsMethod)"
+        path += "&photo_id=\(data.id)"
         path += "&api_key=\(kFlickrKey)"
         path += "&format=\(kFlickrFormat)"
         path += "&nojsoncallback=1"
