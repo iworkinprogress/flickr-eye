@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KIH-5L-a4H">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Flickr Photos Collection View Controller-->
+        <scene sceneID="k3D-hz-qTq">
+            <objects>
+                <collectionViewController id="KIH-5L-a4H" customClass="FlickrPhotosCollectionViewController" customModule="Flickr_Experiment" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="gas-s0-luR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="4ML-J2-HIq">
+                            <size key="itemSize" width="160" height="160"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="FlickrPhotoCell" reuseIdentifier="FlickrPhotoCell" id="zuA-iY-X6f" customClass="FlickrPhotoCollectionViewCell" customModule="Flickr_Experiment" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ioc-fv-hS2">
+                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="ioc-fv-hS2" firstAttribute="height" secondItem="zuA-iY-X6f" secondAttribute="height" id="HTn-Hd-xbQ"/>
+                                    <constraint firstItem="ioc-fv-hS2" firstAttribute="width" secondItem="zuA-iY-X6f" secondAttribute="width" id="I3s-0P-0ii"/>
+                                    <constraint firstItem="ioc-fv-hS2" firstAttribute="centerY" secondItem="zuA-iY-X6f" secondAttribute="centerY" id="fGt-zW-0n8"/>
+                                    <constraint firstItem="ioc-fv-hS2" firstAttribute="centerX" secondItem="zuA-iY-X6f" secondAttribute="centerX" id="qgH-Dy-9Nr"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="ioc-fv-hS2" id="9nR-Lo-oOZ"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="KIH-5L-a4H" id="wOL-P1-gYt"/>
+                            <outlet property="delegate" destination="KIH-5L-a4H" id="prq-Cq-ENm"/>
+                        </connections>
+                    </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XVp-EU-84Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="78" y="151"/>
+        </scene>
+    </scenes>
+</document>
