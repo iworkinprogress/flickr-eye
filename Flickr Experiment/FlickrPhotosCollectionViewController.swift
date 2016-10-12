@@ -17,8 +17,8 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     let viewModel = FlickrPhotosCollectionViewModel()
     
     let kZoomInSpeed = 0.5
-    
     var isZoomedIn = false
+    var currentPage:CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     //MARK: - Layouts
     lazy var zoomedInLayout:UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width:UIScreen.main.bounds.size.width, height:UIScreen.main.bounds.size.height)
+        layout.itemSize = CGSize(width:self.view.bounds.size.width, height:self.view.bounds.size.height)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .horizontal
@@ -38,14 +38,18 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     
     lazy var zoomedOutLayout:UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
-        var width:CGFloat = UIScreen.main.bounds.size.width - ((kPhotoColumns - 1) * kPhotoPadding)
-        width = floor(width / kPhotoColumns)
-        layout.itemSize = CGSize(width:width, height:width)
+        self.update(layout:layout, width:self.view.bounds.size.width, columns:kPhotoColumns)
         layout.minimumLineSpacing = kPhotoPadding
         layout.minimumInteritemSpacing = kPhotoPadding
         layout.scrollDirection = .vertical
         return layout
     }()
+    
+    func update(layout:UICollectionViewFlowLayout, width:CGFloat, columns:CGFloat) {
+        var width:CGFloat = width - ((columns - 1) * kPhotoPadding)
+        width = floor(width / columns)
+        layout.itemSize = CGSize(width:width, height:width)
+    }
     
     //MARK: - Animations
     func zoomIn() {
@@ -59,7 +63,8 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
                 }
             }
             self.navigationItem.rightBarButtonItem = self.backButton
-            self.navigationController?.setNavigationBarHidden(false, animated: true)
+            // only show navigation bar if portrait
+            self.navigationController?.setNavigationBarHidden(self.view.bounds.size.width > self.view.bounds.size.height, animated: true)
         }
     }
     
@@ -78,7 +83,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
         }
     }
     
-    //MARK: - Properties
+    //MARK: - Lazy
     lazy var backButton:UIBarButtonItem = {
         let barButton = UIBarButtonItem(title: NSLocalizedString("Close", comment: "Close button title"), style: .plain, target: self, action: #selector(zoomOut))
         barButton.tintColor = .white
@@ -116,19 +121,31 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
             cell.showComments()
         }
         self.zoomIn()
+        self.currentPage = CGFloat(indexPath.row)
     }
     
     //MARK: - Scroll View
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if(decelerate == false) {
-            self.showCommentsForVisibleCells()
+            self.scrollingDidEnd()
         }
     }
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        self.showCommentsForVisibleCells()
+        self.scrollingDidEnd()
     }
     
+    func scrollingDidEnd() {
+        self.showCommentsForVisibleCells()
+        if self.isZoomedIn {
+            // Keep track of current position when zoomed to make rotation smoother
+            if let collectionView = self.collectionView {
+                self.currentPage = floor(collectionView.contentOffset.x / self.view.bounds.size.width)
+            }
+        }
+    }
+    
+    // MARK: - Cell Manipulation
     func showCommentsForVisibleCells() {
         if self.isZoomedIn {
             for cell in self.collectionView!.visibleCells {
@@ -136,6 +153,31 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
                     flickrCell.showComments()
                 }
             }
+        }
+    }
+    
+    func updateConstraintsForVisibleCells(for size:CGSize) {
+        if self.isZoomedIn {
+            for cell in self.collectionView!.visibleCells {
+                if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
+                    flickrCell.updateContraints(for:size)
+                }
+            }
+        }
+    }
+    
+    //MARK: - Rotation
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        self.update(layout:self.zoomedOutLayout, width:size.width, columns:kPhotoColumns)
+        self.zoomedInLayout.itemSize = size
+        if self.isZoomedIn {
+            self.collectionView?.contentOffset = CGPoint(x:self.currentPage * size.width, y:0)
+            self.showCommentsForVisibleCells()
+            self.updateConstraintsForVisibleCells(for: size)
+            // Hide navigation bar if zoomed in and landscape
+            self.navigationController?.setNavigationBarHidden(size.width > size.height, animated: false)
+        } else {
+            self.zoomOut()
         }
     }
 }

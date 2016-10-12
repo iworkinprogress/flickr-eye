@@ -100,11 +100,8 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             self.downloadedFrom(url: imageURL)
         }
         
-        // Adjust padding to appear below NavigationBar
-        self.topPadding.constant = self.zoomedInOffset()
-        
-        // Adjust image view to be same aspect ratio of image
-        self.updateImageSizeToFit(width:width)
+        // Update views for current size
+        self.updateContraints(for:self.bounds.size)
         
         // Enable Scroll view incase comments require scrolling
         self.scrollView.isScrollEnabled = true
@@ -118,20 +115,37 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.clearComments()
     }
     
-    func zoomedInOffset() -> CGFloat {
-        // Offset height of status bar when zoomed in
-        var height = UIApplication.shared.statusBarFrame.size.height
-        // also add navigation bar height
-        if let rootNavigationVC = self.window?.rootViewController as? UINavigationController {
-            height += rootNavigationVC.navigationBar.bounds.size.height
-        }
-        return height
+    func updateContraints(for size:CGSize) {
+        // Update top padding to be under the navigation bar if in portrait
+        self.updateTopPadding(size:size)
+        
+        // Adjust image view to be same aspect ratio of image
+        self.updateImageSizeToFit(width:size.width, maxHeight:size.height)
     }
     
-    func updateImageSizeToFit(width:CGFloat) {
+    func updateTopPadding(size:CGSize) {
+        // Adjust padding to appear below NavigationBar
+        if size.width > size.height {
+            self.topPadding.constant = 0
+        } else {
+            // Offset height of status bar when zoomed in
+            // Should be able to get 20 dynamically..but isn't right value during rotaiton...
+            var height:CGFloat = 20
+            // also add navigation bar height
+//            if let rootNavigationVC = self.window?.rootViewController as? UINavigationController {
+//                height += rootNavigationVC.navigationBar.bounds.size.height
+//            }
+            // The above doesn't work during rotation
+            height += 44
+            self.topPadding.constant = height
+        }
+
+    }
+    
+    func updateImageSizeToFit(width:CGFloat, maxHeight:CGFloat) {
         if let image = self.imageView.image {
             let size = image.size
-            self.imageViewHeight.constant = width * (size.height / size.width)
+            self.imageViewHeight.constant = min(width * (size.height / size.width), maxHeight)
         }
     }
     
@@ -237,7 +251,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
                                 self.imageView.image = image
                                 if self.isZoomedIn {
                                     // Adjust image view to be same aspect ratio of image
-                                    self.updateImageSizeToFit(width:self.imageView.bounds.size.width)
+                                    self.updateImageSizeToFit(width:self.imageView.bounds.size.width, maxHeight:self.bounds.size.height)
                                 }
                             }
                         }
