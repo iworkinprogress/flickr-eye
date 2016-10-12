@@ -16,13 +16,20 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     var index = -1 // negative one so that it will never conflict with actual index
     var isZoomedIn:Bool = false
     
+    // Autolayout Constraints
     @IBOutlet var topPadding:NSLayoutConstraint!
     @IBOutlet var imageViewHeight:NSLayoutConstraint!
+    @IBOutlet var textViewHeight:NSLayoutConstraint!
+    
+    // Views
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var titleLabel:UILabel!
     @IBOutlet var authorLabel:UILabel!
     @IBOutlet var dateLabel:UILabel!
+    @IBOutlet var viewsLabel:UILabel!
     @IBOutlet var dateLine:UIView!
+    @IBOutlet var dateLine2:UIView!
+    @IBOutlet var commentsTextView:UITextView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -36,8 +43,11 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             self.titleLabel.text = validData.title
             self.authorLabel.text = "by \(validData.author!)"
             self.dateLabel.text = validData.dateAsString()
+            self.viewsLabel.text = "\(validData.views!) views"
+            
             // unset the image view image
             self.imageView.image = nil
+            
             // and try to download / load one from cache if previously downloaded
             if isZoomedIn {
                 if let imageURL = validData.imageURL() {
@@ -47,7 +57,8 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
                 if let imageURL = validData.thumbnailURL() {
                     self.downloadedFrom(url: imageURL)
                 }
-            }        }
+            }
+        }
     }
     
     override func prepareForReuse() {
@@ -55,32 +66,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.index = -1
     }
     
-    func zoomIn(width:CGFloat) {
-        self.isZoomedIn = true
-        self.imageView.contentMode = .scaleAspectFit
-        self.imageView.backgroundColor = .black
-        if let imageURL = self.data?.imageURL() {
-            self.downloadedFrom(url: imageURL)
-        }
-        
-        // Adjust padding to appear below NavigationBar
-        self.topPadding.constant = self.zoomedInOffset()
-        
-        // Adjust image view to be same aspect ratio of image
-        if let image = self.imageView.image {
-            let size = image.size
-            self.imageViewHeight.constant = width * (size.height / size.width)
-        }
-        
-        // Enable Scroll view incase comments require scrolling
-        self.scrollView.isScrollEnabled = true
-        self.scrollView.isUserInteractionEnabled = true
-        self.scrollView.contentOffset = CGPoint.zero
-        
-        // Get details for this photo if we haven't already
-        self.showLabels()
-    }
-    
+    //MARK: - Zoom
     func zoomOut(width:CGFloat) {
         self.isZoomedIn = false
         self.imageView.contentMode = .scaleAspectFill
@@ -106,6 +92,32 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.hideLabels()
     }
     
+    func zoomIn(width:CGFloat) {
+        self.isZoomedIn = true
+        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.backgroundColor = .black
+        if let imageURL = self.data?.imageURL() {
+            self.downloadedFrom(url: imageURL)
+        }
+        
+        // Adjust padding to appear below NavigationBar
+        self.topPadding.constant = self.zoomedInOffset()
+        
+        // Adjust image view to be same aspect ratio of image
+        self.updateImageSizeToFit(width:width)
+        
+        // Enable Scroll view incase comments require scrolling
+        self.scrollView.isScrollEnabled = true
+        self.scrollView.isUserInteractionEnabled = true
+        self.scrollView.contentOffset = CGPoint.zero
+        
+        // Get details for this photo if we haven't already
+        self.showLabels()
+        
+        // Clear out existing comments
+        self.clearComments()
+    }
+    
     func zoomedInOffset() -> CGFloat {
         // Offset height of status bar when zoomed in
         var height = UIApplication.shared.statusBarFrame.size.height
@@ -116,29 +128,71 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         return height
     }
     
-    //MARK: - Labels
-    func clearDetailLabels() {
-        self.authorLabel.text = ""
-        self.dateLabel.text = ""
+    func updateImageSizeToFit(width:CGFloat) {
+        if let image = self.imageView.image {
+            let size = image.size
+            self.imageViewHeight.constant = width * (size.height / size.width)
+        }
     }
     
+    //MARK: - Labels
     func hideLabels() {
-        self.titleLabel.alpha = 0
-        self.authorLabel.alpha = 0
-        self.dateLabel.alpha = 0
-        self.dateLine.alpha = 0
+        self.showLabels(show: false)
     }
     
     func showLabels() {
-        self.titleLabel.alpha = 1
-        self.authorLabel.alpha = 1
-        self.dateLabel.alpha = 1
-        self.dateLine.alpha = 1
+        self.showLabels(show: true)
+    }
+    
+    func showLabels(show:Bool) {
+        self.titleLabel.isHidden = !show
+        self.authorLabel.isHidden = !show
+        self.dateLabel.isHidden = !show
+        self.dateLine.isHidden = !show
+        self.dateLine2.isHidden = !show
+        self.commentsTextView.isHidden = !show
     }
     
     //MARK: - Comments
     func showComments() {
-        NSLog("Get comments")
+        
+        if let validData = self.data {
+            // Instead of using a UITextView to display this content
+            // We really should use UITableView
+            // But that would require restructing our view hierarchy signficantly to make work well
+            // For now, lets limit comment display to 8000 height
+            if let comments = validData.comments {
+                var string = ""
+                for comment in comments {
+                    string += "\(comment.author!) wrote:\n"
+                    string += comment.comment
+                    string += "\n\n"
+                }
+                if string.characters.count == 0 {
+                    self.commentsTextView.text = NSLocalizedString("No comments", comment:"Message displayed when there are not comments")
+                } else {
+                    self.commentsTextView.text = string
+                }
+                self.textViewHeight.constant = min(self.commentsTextView.sizeThatFits(self.commentsTextView.contentSize).height, 8000)
+            } else {
+                // Fetch comments
+                validData.fetchComments(completion: { (photoData) in
+                    if let validData = self.data {
+                        if validData.id == photoData.id {
+                            DispatchQueue.main.async() { () -> Void in
+                                self.showComments()
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    }
+    
+    func clearComments() {
+        self.commentsTextView.setContentOffset(CGPoint.zero, animated: false)
+        self.commentsTextView.text = NSLocalizedString("Loading comments...", comment:"Message displayed while loading comments")
+        self.textViewHeight.constant = self.commentsTextView.sizeThatFits(self.commentsTextView.contentSize).height
     }
     
     //MARK: - Notifications
@@ -149,7 +203,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     func didLoadPhotoData(notification:Notification) {
         if let userInfo = notification.userInfo {
             if let photoIndex = userInfo[kDidLoadPhotoIndex] as? Int {
-                if photoIndex == index {
+                if photoIndex == self.index {
                     if let photoData = userInfo[kPhotoData] as? FlickrPhotoData {
                         DispatchQueue.main.async() { () -> Void in
                             self.configure(with: photoData, at:self.index, isZoomedIn: self.isZoomedIn)
@@ -181,10 +235,14 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
                         if let currentData = self.data {
                             if currentPhotoID == currentData.id {
                                 self.imageView.image = image
+                                if self.isZoomedIn {
+                                    // Adjust image view to be same aspect ratio of image
+                                    self.updateImageSizeToFit(width:self.imageView.bounds.size.width)
+                                }
                             }
                         }
                     }
-                    }.resume()
+                }.resume()
             }
         }
     }

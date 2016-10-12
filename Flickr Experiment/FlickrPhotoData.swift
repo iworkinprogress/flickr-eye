@@ -24,9 +24,10 @@ class FlickrPhotoData: NSObject {
     var title:String!
     var author:String!
     var date:Date!
+    var views:String!
     
     // Comments
-    var comments = [FlickrPhotoComment]()
+    var comments:[FlickrPhotoComment]?
     
     // Dateformatter
     static let dateFormatter:DateFormatter = {
@@ -42,6 +43,7 @@ class FlickrPhotoData: NSObject {
         self.secret = dictionary["secret"] as! String
         self.farm = dictionary["farm"] as! NSNumber
         self.server = dictionary["server"] as! String
+        self.views = dictionary["views"] as! String
         self.author = dictionary["ownername"] as! String
         if author.characters.count == 0 {
             self.author = NSLocalizedString("Unknown", comment:"Unknown author name")
@@ -51,16 +53,12 @@ class FlickrPhotoData: NSObject {
     }
     
     func fetchComments(completion: @escaping (_ data:FlickrPhotoData) -> Void) {
-         FlickrAPI.shared.fetchComments(data: self) { (dictionary) in
-            if let validDictionary = dictionary {
-                if let comments = validDictionary["comments"] as? [String:AnyObject] {
-                    if let commentCount = comments["_content"] as? String {
-                        if let count = Int(commentCount) {
-                            if count > 0 {
-                                NSLog("Load comments")
-                            }
-                        }
-                    }
+        FlickrAPI.shared.fetchComments(data: self) { (photoComments) in
+            if let comments = photoComments {
+                self.comments = [FlickrPhotoComment]()
+                for commentDictionary in comments {
+                    let commentData = FlickrPhotoComment(with: commentDictionary)
+                    self.comments?.append(commentData)
                 }
             }
             completion(self)
@@ -70,7 +68,7 @@ class FlickrPhotoData: NSObject {
     func dateAsString() -> String {
         if let validDate = self.date {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh:mma MM dd, yyyy"
+            dateFormatter.dateFormat = "MM/dd/yyyy @ hh:mma"
             return dateFormatter.string(from: validDate)
         } else {
             return NSLocalizedString("Unknown", comment:"Unknown date text")

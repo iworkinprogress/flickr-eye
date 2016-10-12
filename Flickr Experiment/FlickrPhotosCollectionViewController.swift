@@ -105,7 +105,6 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
         cell.configure(with:self.viewModel.data(at:indexPath.row), at:indexPath.row, isZoomedIn: self.isZoomedIn)
         if self.isZoomedIn {
             cell.zoomIn(width:self.zoomedInLayout.itemSize.width)
-            cell.showComments()
         } else {
             cell.zoomOut(width: self.zoomedOutLayout.itemSize.width)
         }
@@ -113,15 +112,31 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        // Also get cells to the left and right and load detail info, cause these won't reload but we want to fetch the detail labels in case user moves left or right
-        for i in indexPath.row-1..<indexPath.row+2 {
-            if let cell = self.collectionView?.cellForItem(at: IndexPath(row:i, section: 0)) as? FlickrPhotoCollectionViewCell {
-                cell.showComments()
+        if let cell = self.collectionView?.cellForItem(at: indexPath) as? FlickrPhotoCollectionViewCell {
+            cell.showComments()
+        }
+        self.zoomIn()
+    }
+    
+    //MARK: - Scroll View
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if(decelerate == false) {
+            self.showCommentsForVisibleCells()
+        }
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.showCommentsForVisibleCells()
+    }
+    
+    func showCommentsForVisibleCells() {
+        if self.isZoomedIn {
+            for cell in self.collectionView!.visibleCells {
+                if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
+                    flickrCell.showComments()
+                }
             }
         }
-        
-        self.zoomIn()
     }
 }
 
