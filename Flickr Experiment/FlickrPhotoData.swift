@@ -23,13 +23,10 @@ class FlickrPhotoData: NSObject {
     var server:String!
     var title:String!
     var author:String!
+    var date:Date!
     
-    // Details
-    var date:Date?
+    // Comments
     var comments = [FlickrPhotoComment]()
-    
-    // Secondary info
-    var authorName:String?
     
     // Dateformatter
     static let dateFormatter:DateFormatter = {
@@ -53,12 +50,8 @@ class FlickrPhotoData: NSObject {
         self.date = FlickrPhotoData.dateFormatter.date(from: dictionary["datetaken"] as! String)
     }
     
-    func hasDetails() -> Bool {
-        return self.author != nil && self.date != nil
-    }
-    
     func fetchComments(completion: @escaping (_ data:FlickrPhotoData) -> Void) {
-         FlickrAPI.shared.fetchDetails(data: self) { (dictionary) in
+         FlickrAPI.shared.fetchComments(data: self) { (dictionary) in
             if let validDictionary = dictionary {
                 if let comments = validDictionary["comments"] as? [String:AnyObject] {
                     if let commentCount = comments["_content"] as? String {

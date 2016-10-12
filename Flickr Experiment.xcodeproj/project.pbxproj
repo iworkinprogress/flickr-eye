@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2428F8F61DADC26C00E83F23 /* FlickrExperimentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42CC1DAC382000212948 /* FlickrExperimentTests.swift */; };
 		24A25D641DAC93990081E344 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F81DAC739600212948 /* ImageCache.swift */; };
 		24A25D651DAC93990081E344 /* FlickrPhotoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F01DAC5FB900212948 /* FlickrPhotoData.swift */; };
 		24A25D661DAC93990081E344 /* FlickrPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42ED1DAC4F2500212948 /* FlickrPhotoCollectionViewCell.swift */; };
@@ -23,7 +24,6 @@
 		24A25D801DAD829A0081E344 /* FlickrPhotoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F01DAC5FB900212948 /* FlickrPhotoData.swift */; };
 		24A25D811DAD82A60081E344 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A25D751DAD35B40081E344 /* UIImageView+Extensions.swift */; };
 		24A25D821DAD86230081E344 /* FlickrPhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A25D771DAD46160081E344 /* FlickrPhotoComment.swift */; };
-		24EB42CD1DAC382000212948 /* FlickrExperimentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42CC1DAC382000212948 /* FlickrExperimentTests.swift */; };
 		24EB42D81DAC382000212948 /* FlickrExperimentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42D71DAC382000212948 /* FlickrExperimentUITests.swift */; };
 		24EB42E81DAC394C00212948 /* FlickrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42E61DAC394C00212948 /* FlickrAPI.swift */; };
 		24EB42FA1DAC739600212948 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F81DAC739600212948 /* ImageCache.swift */; };
@@ -57,8 +57,8 @@
 		24EB42B61DAC382000212948 /* FlickrPhotosCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlickrPhotosCollectionViewController.swift; path = "Flickr Experiment/FlickrPhotosCollectionViewController.swift"; sourceTree = SOURCE_ROOT; };
 		24EB42BE1DAC382000212948 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Flickr Experiment/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		24EB42C81DAC382000212948 /* Flickr ExperimentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Flickr ExperimentTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		24EB42CC1DAC382000212948 /* FlickrExperimentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlickrExperimentTests.swift; path = "Flickr Experiment Tests/FlickrExperimentTests.swift"; sourceTree = "<group>"; };
-		24EB42CE1DAC382000212948 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Flickr Experiment Tests/Info.plist"; sourceTree = "<group>"; };
+		24EB42CC1DAC382000212948 /* FlickrExperimentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlickrExperimentTests.swift; path = "Flickr Experiment Tests/FlickrExperimentTests.swift"; sourceTree = SOURCE_ROOT; };
+		24EB42CE1DAC382000212948 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Flickr Experiment Tests/Info.plist"; sourceTree = SOURCE_ROOT; };
 		24EB42D31DAC382000212948 /* Flickr ExperimentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Flickr ExperimentUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		24EB42D71DAC382000212948 /* FlickrExperimentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlickrExperimentUITests.swift; path = "Flickr Experiment UITests/FlickrExperimentUITests.swift"; sourceTree = "<group>"; };
 		24EB42D91DAC382000212948 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Flickr Experiment UITests/Info.plist"; sourceTree = "<group>"; };
@@ -358,10 +358,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2428F8F61DADC26C00E83F23 /* FlickrExperimentTests.swift in Sources */,
 				24A25D811DAD82A60081E344 /* UIImageView+Extensions.swift in Sources */,
 				24A25D821DAD86230081E344 /* FlickrPhotoComment.swift in Sources */,
 				24EB42FA1DAC739600212948 /* ImageCache.swift in Sources */,
-				24EB42CD1DAC382000212948 /* FlickrExperimentTests.swift in Sources */,
 				24EB42E81DAC394C00212948 /* FlickrAPI.swift in Sources */,
 				24A25D801DAD829A0081E344 /* FlickrPhotoData.swift in Sources */,
 			);
@@ -535,9 +535,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = J84N4FRDKN;
-				INFOPLIST_FILE = "Interesting Flickr PhotosTests/Info.plist";
+				INFOPLIST_FILE = "Flickr Experiment Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.iworkinprogress.Interesting-Flickr-PhotosTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.iworkinprogress.Flicker-Experiment-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Flickr Experiment.app/Flickr Experiment";
@@ -550,9 +550,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = J84N4FRDKN;
-				INFOPLIST_FILE = "Interesting Flickr PhotosTests/Info.plist";
+				INFOPLIST_FILE = "Flickr Experiment Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.iworkinprogress.Interesting-Flickr-PhotosTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.iworkinprogress.Flicker-Experiment-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Flickr Experiment.app/Flickr Experiment";

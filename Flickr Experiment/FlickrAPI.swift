@@ -55,7 +55,7 @@ class FlickrAPI: NSObject {
     }
     
     //MARK: - Get Details
-    func fetchDetails(data:FlickrPhotoData, completion: @escaping (_ photoDetails:NSDictionary?) -> Void) {
+    func fetchComments(data:FlickrPhotoData, completion: @escaping (_ photoDetails:NSDictionary?) -> Void) {
         if let flickrURL = URL(string: self.detailsPath(for:data)) {
             
             URLSession.shared.dataTask(with: flickrURL, completionHandler: { (data, response, error) in
@@ -68,7 +68,7 @@ class FlickrAPI: NSObject {
                         }
                         
                     } catch let error as NSError? {
-                        NSLog("Error loading Flickr Photo Details: \(error?.localizedDescription)")
+                        NSLog("Error loading Flickr Photo Comments: \(error?.localizedDescription)")
                         completion(nil)
                     }
                 }
