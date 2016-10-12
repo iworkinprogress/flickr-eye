@@ -191,7 +191,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     
     func clearComments() {
         self.commentsTextView.setContentOffset(CGPoint.zero, animated: false)
-        self.commentsTextView.text = NSLocalizedString("Loading comments...", comment:"Message displayed while loading comments")
+        self.commentsTextView.text = NSLocalizedString("Loading comments…", comment:"Message displayed while loading comments")
         self.textViewHeight.constant = self.commentsTextView.sizeThatFits(self.commentsTextView.contentSize).height
     }
     

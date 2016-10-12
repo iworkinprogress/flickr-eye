@@ -11,7 +11,7 @@
         <scene sceneID="k3D-hz-qTq">
             <objects>
                 <collectionViewController automaticallyAdjustsScrollViewInsets="NO" id="KIH-5L-a4H" customClass="FlickrPhotosCollectionViewController" customModule="Flickr_Experiment" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="gas-s0-luR">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="gas-s0-luR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -38,6 +38,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="08/21/1983 @ 4:55pm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQn-WS-M9V">
+                                                    <accessibility key="accessibilityConfiguration" identifier="Photo Date"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="161" id="KUr-vJ-Lxl"/>
                                                         <constraint firstAttribute="height" constant="31" id="oSd-yc-vPd"/>
@@ -59,6 +60,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="by Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="StZ-Ii-YjT">
+                                                    <accessibility key="accessibilityConfiguration" identifier="Photo Author"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="31" id="6Nb-Tv-GwF"/>
                                                     </constraints>
@@ -67,6 +69,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo name" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alt-mO-Ds0">
+                                                    <accessibility key="accessibilityConfiguration" identifier="Photo Title"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="jZS-2Z-Ik8"/>
                                                     </constraints>
@@ -76,6 +79,7 @@
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Comments" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jQj-sd-QLI">
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="Photo Comments"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="Qe7-Cw-9LM"/>
                                                     </constraints>
@@ -84,6 +88,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2478 Views" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIi-cS-KbT">
+                                                    <accessibility key="accessibilityConfiguration" identifier="Photo Views"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="98" id="XYM-7o-IMp"/>
                                                         <constraint firstAttribute="height" constant="31" id="wS1-CD-HXt"/>

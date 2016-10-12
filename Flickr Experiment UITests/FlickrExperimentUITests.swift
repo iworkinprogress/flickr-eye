@@ -28,9 +28,38 @@ class FlickrExperimentUITests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testTapPhotoAndViewDetails() {
+        let app = XCUIApplication()
+        let cells = app.collectionViews.cells
+        XCTAssert(cells.count > 0)
+        
+        let collectionView = app.collectionViews.element(boundBy: 0)
+        let cell = cells.element(boundBy:0)
+        
+        // make sure that cell is smaller than collection view
+        XCTAssert(cell.frame.size.width < collectionView.frame.size.width)
+        
+        // Goto details
+        cell.tap()
+        
+        // make sure that cell is equal width with collection view
+        XCTAssert(cell.frame.size.width == collectionView.frame.size.width)
+        
+        // check that the cell has filled in labels with data from Flickr
+        let title = app.staticTexts.element(matching: .any, identifier: "Photo Title").label
+        XCTAssert(title != "Photo name")
+        
+        let author = app.staticTexts.element(matching: .any, identifier: "Photo Author").label
+        XCTAssert(author != "by Author")
+        
+        let date = app.staticTexts.element(matching: .any, identifier: "Photo Date").label
+        XCTAssert(date != "08/21/1983 @ 4:55pm")
+        
+        let views = app.staticTexts.element(matching: .any, identifier: "Photo Views").label
+        XCTAssert(views != "2478 Views")
+        
+        let comments = app.textViews.element(matching: .any, identifier: "Photo Comments").value
+        XCTAssert(comments as! String != "Comment")
     }
     
 }
