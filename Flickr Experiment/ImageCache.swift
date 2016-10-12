@@ -30,6 +30,7 @@ class ImageCache: NSObject {
         images[path] = image
     }
     
+    // If we get a memory warning, go ahead and clear out this cache
     func clearCache() {
         self.images = [String:UIImage]()
     }

@@ -27,7 +27,7 @@ extension UIImageView {
                     ImageCache.shared.cache(image: image, at: url.absoluteString)
                     self.image = image
                 }
-                }.resume()
+            }.resume()
         }
     }
 }

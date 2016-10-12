@@ -17,6 +17,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     var isZoomedIn:Bool = false
     
     @IBOutlet var topPadding:NSLayoutConstraint!
+    @IBOutlet var imageViewHeight:NSLayoutConstraint!
     @IBOutlet var scrollView:UIScrollView!
     @IBOutlet var titleLabel:UILabel!
     @IBOutlet var authorLabel:UILabel!
@@ -33,10 +34,13 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         if let validData = data {
             self.data = validData
             self.titleLabel.text = validData.title
-            if isZoomedIn {
-                self.zoomIn()
-            } else {
-                self.zoomOut()
+            self.authorLabel.text = "by \(validData.author!)"
+            self.dateLabel.text = validData.dateAsString()
+            // unset the image view image
+            self.imageView.image = nil
+            // and try to download / load one from cache if previously downloaded
+            if let imageURL = validData.imageURL() {
+                self.imageView.downloadedFrom(url: imageURL)
             }
         }
     }
@@ -46,33 +50,55 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.index = -1
     }
     
-    func zoomIn() {
+    func zoomIn(width:CGFloat) {
         self.isZoomedIn = true
         self.imageView.contentMode = .scaleAspectFit
         self.imageView.backgroundColor = .black
         if let imageURL = self.data?.imageURL() {
             self.imageView.downloadedFrom(url: imageURL)
         }
+        
+        // Adjust padding to appear below NavigationBar
         self.topPadding.constant = self.zoomedInOffset()
+        
+        // Adjust image view to be same aspect ratio of image
+        if let image = self.imageView.image {
+            let size = image.size
+            self.imageViewHeight.constant = width * (size.height / size.width)
+        }
+        
+        // Enable Scroll view incase comments require scrolling
         self.scrollView.isScrollEnabled = true
         self.scrollView.isUserInteractionEnabled = true
         self.scrollView.contentOffset = CGPoint.zero
         
+        // Get details for this photo if we haven't already
         self.showLabels()
-        
-        // Get additional photo details if they don't exist
-        if let validData = self.data {
-            if validData.hasDetails() {
-                self.updateCellLabels()
-            } else {
-                validData.fetchDetails(completion: { (photoData) in
-                    if(photoData == self.data) {
-                        // still looking at same photo, update contents
-                        self.updateCellLabels()
-                    }
-                })
-            }
+    }
+    
+    func zoomOut(width:CGFloat) {
+        self.isZoomedIn = false
+        self.imageView.contentMode = .scaleAspectFill
+        self.imageView.backgroundColor = UIColor(red: 0.15, green: 0.17, blue: 0.21, alpha: 1.0)
+        if let thumbnailURL = self.data?.thumbnailURL() {
+            self.imageView.downloadedFrom(url: thumbnailURL)
         }
+        
+        // Update padding to be flush with top of screen
+        self.topPadding.constant = 0
+        
+        // make ImageView a square
+        if width > 0 {
+            self.imageViewHeight.constant = width
+        }
+        
+        // disable scrollview because we're only showing thumbnail when zoomed out
+        self.scrollView.isScrollEnabled = false
+        self.scrollView.isUserInteractionEnabled = false
+        self.scrollView.contentOffset = CGPoint.zero
+        
+        // Only show image while zoomed out
+        self.hideLabels()
     }
     
     func zoomedInOffset() -> CGFloat {
@@ -85,28 +111,10 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         return height
     }
     
-    func zoomOut() {
-        self.isZoomedIn = false
-        self.imageView.contentMode = .scaleAspectFill
-        self.imageView.backgroundColor = UIColor(red: 0.15, green: 0.17, blue: 0.21, alpha: 1.0)
-        if let thumbnailURL = self.data?.thumbnailURL() {
-            self.imageView.downloadedFrom(url: thumbnailURL)
-        }
-        self.topPadding.constant = 0
-        self.scrollView.isScrollEnabled = false
-        self.scrollView.isUserInteractionEnabled = false
-        self.scrollView.contentOffset = CGPoint.zero
-        self.hideLabels()
-    }
-    
     //MARK: - Labels
-    func updateCellLabels() {
-        if let validData = self.data {
-            if validData.hasDetails() {
-                self.authorLabel.text = "by \(validData.author)"
-                self.dateLabel.text = validData.dateAsString()
-            }
-        }
+    func clearDetailLabels() {
+        self.authorLabel.text = ""
+        self.dateLabel.text = ""
     }
     
     func hideLabels() {
@@ -121,6 +129,11 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.authorLabel.alpha = 1
         self.dateLabel.alpha = 1
         self.dateLine.alpha = 1
+    }
+    
+    //MARK: - Comments
+    func showComments() {
+        NSLog("Get comments")
     }
     
     //MARK: - Notifications
@@ -141,5 +154,4 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
 }

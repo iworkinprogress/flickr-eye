@@ -13,20 +13,30 @@ enum PhotoSize {
     case large
 }
 
+let kFlickrDateFormat = "yyyy-MM-dd HH:mm:ss"
+
 class FlickrPhotoData: NSObject {
+    
     var id:String!
     var secret:String!
     var farm:NSNumber!
     var server:String!
     var title:String!
+    var author:String!
     
     // Details
-    var author:String?
     var date:Date?
-//    var comments = [FlickrPhotoComment]()
+    var comments = [FlickrPhotoComment]()
     
     // Secondary info
     var authorName:String?
+    
+    // Dateformatter
+    static let dateFormatter:DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = kFlickrDateFormat
+        return formatter
+    }()
     
     init(with dictionary:NSDictionary) {
         super.init()
@@ -35,18 +45,43 @@ class FlickrPhotoData: NSObject {
         self.secret = dictionary["secret"] as! String
         self.farm = dictionary["farm"] as! NSNumber
         self.server = dictionary["server"] as! String
+        self.author = dictionary["ownername"] as! String
+        if author.characters.count == 0 {
+            self.author = NSLocalizedString("Unknown", comment:"Unknown author name")
+        }
+        
+        self.date = FlickrPhotoData.dateFormatter.date(from: dictionary["datetaken"] as! String)
     }
     
     func hasDetails() -> Bool {
-        return author != nil && date != nil
+        return self.author != nil && self.date != nil
     }
     
-    func fetchDetails(completion: @escaping (_ data:FlickrPhotoData) -> Void) {
-//        FlickrAPI
+    func fetchComments(completion: @escaping (_ data:FlickrPhotoData) -> Void) {
+         FlickrAPI.shared.fetchDetails(data: self) { (dictionary) in
+            if let validDictionary = dictionary {
+                if let comments = validDictionary["comments"] as? [String:AnyObject] {
+                    if let commentCount = comments["_content"] as? String {
+                        if let count = Int(commentCount) {
+                            if count > 0 {
+                                NSLog("Load comments")
+                            }
+                        }
+                    }
+                }
+            }
+            completion(self)
+        }
     }
     
     func dateAsString() -> String {
-        return "9:99am on Saturday, August 21, 2016"
+        if let validDate = self.date {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mma MM dd, yyyy"
+            return dateFormatter.string(from: validDate)
+        } else {
+            return NSLocalizedString("Unknown", comment:"Unknown date text")
+        }
     }
     
     //MARK: - Images

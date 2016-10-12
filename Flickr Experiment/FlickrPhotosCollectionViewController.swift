@@ -55,7 +55,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
             collectionView.isPagingEnabled = true
             for cell in collectionView.visibleCells {
                 if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
-                    flickrCell.zoomIn()
+                    flickrCell.zoomIn(width:self.zoomedInLayout.itemSize.width)
                 }
             }
             self.navigationItem.rightBarButtonItem = self.backButton
@@ -70,7 +70,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
             collectionView.isPagingEnabled = false
             for cell in collectionView.visibleCells {
                 if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
-                    flickrCell.zoomOut()
+                    flickrCell.zoomOut(width:self.zoomedOutLayout.itemSize.width)
                 }
             }
             self.navigationItem.rightBarButtonItem = nil
@@ -103,10 +103,24 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kFlickrPhotoCellIdentifier, for: indexPath) as! FlickrPhotoCollectionViewCell
         cell.configure(with:self.viewModel.data(at:indexPath.row), at:indexPath.row, isZoomedIn: self.isZoomedIn)
+        if self.isZoomedIn {
+            cell.zoomIn(width:self.zoomedInLayout.itemSize.width)
+            cell.showComments()
+        } else {
+            cell.zoomOut(width: self.zoomedOutLayout.itemSize.width)
+        }
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // Also get cells to the left and right and load detail info, cause these won't reload but we want to fetch the detail labels in case user moves left or right
+        for i in indexPath.row-1..<indexPath.row+2 {
+            if let cell = self.collectionView?.cellForItem(at: IndexPath(row:i, section: 0)) as? FlickrPhotoCollectionViewCell {
+                cell.showComments()
+            }
+        }
+        
         self.zoomIn()
     }
 }

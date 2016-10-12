@@ -20,10 +20,12 @@
 		24A25D741DAC94D50081E344 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24A25D711DAC94D50081E344 /* Main.storyboard */; };
 		24A25D761DAD35B40081E344 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A25D751DAD35B40081E344 /* UIImageView+Extensions.swift */; };
 		24A25D781DAD46160081E344 /* FlickrPhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A25D771DAD46160081E344 /* FlickrPhotoComment.swift */; };
+		24A25D801DAD829A0081E344 /* FlickrPhotoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F01DAC5FB900212948 /* FlickrPhotoData.swift */; };
+		24A25D811DAD82A60081E344 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A25D751DAD35B40081E344 /* UIImageView+Extensions.swift */; };
+		24A25D821DAD86230081E344 /* FlickrPhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A25D771DAD46160081E344 /* FlickrPhotoComment.swift */; };
 		24EB42CD1DAC382000212948 /* FlickrExperimentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42CC1DAC382000212948 /* FlickrExperimentTests.swift */; };
 		24EB42D81DAC382000212948 /* FlickrExperimentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42D71DAC382000212948 /* FlickrExperimentUITests.swift */; };
 		24EB42E81DAC394C00212948 /* FlickrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42E61DAC394C00212948 /* FlickrAPI.swift */; };
-		24EB42F21DAC5FB900212948 /* FlickrPhotoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F01DAC5FB900212948 /* FlickrPhotoData.swift */; };
 		24EB42FA1DAC739600212948 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F81DAC739600212948 /* ImageCache.swift */; };
 /* End PBXBuildFile section */
 
@@ -356,10 +358,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24A25D811DAD82A60081E344 /* UIImageView+Extensions.swift in Sources */,
+				24A25D821DAD86230081E344 /* FlickrPhotoComment.swift in Sources */,
 				24EB42FA1DAC739600212948 /* ImageCache.swift in Sources */,
-				24EB42F21DAC5FB900212948 /* FlickrPhotoData.swift in Sources */,
 				24EB42CD1DAC382000212948 /* FlickrExperimentTests.swift in Sources */,
 				24EB42E81DAC394C00212948 /* FlickrAPI.swift in Sources */,
+				24A25D801DAD829A0081E344 /* FlickrPhotoData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

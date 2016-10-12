@@ -9,5 +9,9 @@
 import UIKit
 
 class FlickrPhotoComment: NSObject {
-
+    
+    init(with dictionary:NSDictionary) {
+        super.init()
+    }
+    
 }

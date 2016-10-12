@@ -14,6 +14,7 @@ class FlickrAPI: NSObject {
     
     let kFlickrPath = "https://api.flickr.com/services/rest/?method="
     let kFlickrGetPhotosMethod = "flickr.photos.getRecent"
+    let kFlickrGetInterestingPhotosMethod = "flickr.interestingness.getList"
     let kFlickrGetDetailsMethod = "flickr.photos.getInfo"
     let kFlickrKey = "8617b22260a92e5550bddcdcfec95f7f"
     let kFlickrFormat = "json"
@@ -78,19 +79,20 @@ class FlickrAPI: NSObject {
     //MARK: - Paths
     func path(for page:NSInteger) -> String {
         var path = "\(kFlickrPath)"
-        path += "&method=\(kFlickrGetPhotosMethod)"
+        path += "&method=\(kFlickrGetInterestingPhotosMethod)"
         path += "&page=\(page)"
         path += "&per_page=\(kFlickrPhotosPerPage)"
         path += "&api_key=\(kFlickrKey)"
         path += "&format=\(kFlickrFormat)"
         path += "&nojsoncallback=1"
+        path += "&extras=date_taken,owner_name,views,tags,description"
         return path
     }
     
     func detailsPath(for data:FlickrPhotoData) -> String {
         var path = "\(kFlickrPath)"
         path += "&method=\(kFlickrGetDetailsMethod)"
-        path += "&photo_id=\(data.id)"
+        path += "&photo_id=\(data.id!)"
         path += "&api_key=\(kFlickrKey)"
         path += "&format=\(kFlickrFormat)"
         path += "&nojsoncallback=1"

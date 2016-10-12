@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -35,14 +34,14 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ioc-fv-hS2">
                                                     <color key="backgroundColor" red="0.1529411765" green="0.1764705882" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="ioc-fv-hS2" secondAttribute="height" multiplier="1:1" id="cYA-Bg-BW5"/>
+                                                        <constraint firstAttribute="height" constant="375" id="tap-iQ-1wa"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9:35pm on Saturday, August 21, 2016" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQn-WS-M9V">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="31" id="oSd-yc-vPd"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.4549019608" green="0.49803921569999998" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -56,7 +55,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="31" id="6Nb-Tv-GwF"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                                     <color key="textColor" red="0.4549019608" green="0.49803921569999998" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -64,7 +63,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="jZS-2Z-Ik8"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.4549019608" green="0.49803921569999998" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -102,6 +101,7 @@
                                     <outlet property="dateLabel" destination="aQn-WS-M9V" id="67K-3X-ww5"/>
                                     <outlet property="dateLine" destination="roL-Is-nRz" id="68c-77-sNd"/>
                                     <outlet property="imageView" destination="ioc-fv-hS2" id="9nR-Lo-oOZ"/>
+                                    <outlet property="imageViewHeight" destination="tap-iQ-1wa" id="dG3-Wl-QwK"/>
                                     <outlet property="scrollView" destination="gQi-AZ-pdU" id="3cd-Wt-Q2t"/>
                                     <outlet property="titleLabel" destination="alt-mO-Ds0" id="VMH-Cy-ISB"/>
                                     <outlet property="topPadding" destination="xrw-7M-fDm" id="IZc-3K-wnL"/>
@@ -122,10 +122,9 @@
         <!--Navigation Controller-->
         <scene sceneID="Ati-TI-0b0">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Y9d-iw-ZWR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="jQx-lA-3aj" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" opaque="NO" alpha="0.5" contentMode="scaleToFill" misplaced="YES" id="OrG-Rv-3xd">
+                    <navigationBar key="navigationBar" opaque="NO" alpha="0.5" contentMode="scaleToFill" id="OrG-Rv-3xd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.1529411765" green="0.1764705882" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
@@ -134,6 +133,7 @@
                         <segue destination="KIH-5L-a4H" kind="relationship" relationship="rootViewController" id="MQD-Ua-A9u"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y9d-iw-ZWR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-526" y="188"/>
         </scene>
