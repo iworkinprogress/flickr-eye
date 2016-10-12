@@ -74,7 +74,7 @@
                                                     <color key="textColor" red="0.4549019608" green="0.49803921569999998" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Comments" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jQj-sd-QLI">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Comments" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jQj-sd-QLI">
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="Qe7-Cw-9LM"/>
