@@ -39,10 +39,15 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             // unset the image view image
             self.imageView.image = nil
             // and try to download / load one from cache if previously downloaded
-            if let imageURL = validData.imageURL() {
-                self.imageView.downloadedFrom(url: imageURL)
-            }
-        }
+            if isZoomedIn {
+                if let imageURL = validData.imageURL() {
+                    self.downloadedFrom(url: imageURL)
+                }
+            } else {
+                if let imageURL = validData.thumbnailURL() {
+                    self.downloadedFrom(url: imageURL)
+                }
+            }        }
     }
     
     override func prepareForReuse() {
@@ -55,7 +60,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.imageView.contentMode = .scaleAspectFit
         self.imageView.backgroundColor = .black
         if let imageURL = self.data?.imageURL() {
-            self.imageView.downloadedFrom(url: imageURL)
+            self.downloadedFrom(url: imageURL)
         }
         
         // Adjust padding to appear below NavigationBar
@@ -81,7 +86,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.imageView.contentMode = .scaleAspectFill
         self.imageView.backgroundColor = UIColor(red: 0.15, green: 0.17, blue: 0.21, alpha: 1.0)
         if let thumbnailURL = self.data?.thumbnailURL() {
-            self.imageView.downloadedFrom(url: thumbnailURL)
+            self.downloadedFrom(url: thumbnailURL)
         }
         
         // Update padding to be flush with top of screen
@@ -151,6 +156,35 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    //MARK: - Download
+    func downloadedFrom(url: URL) {
+        if let validData = self.data {
+            let currentPhotoID = validData.id
+            if let image = ImageCache.shared.image(at: url.absoluteString) {
+                self.imageView.image = image
+            } else {
+                URLSession.shared.dataTask(with: url) { (data, response, error) in
+                    guard
+                        let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                        let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                        let data = data, error == nil,
+                        let image = UIImage(data: data)
+                        else { return }
+                    DispatchQueue.main.async() { () -> Void in
+                        ImageCache.shared.cache(image: image, at: url.absoluteString)
+                        // If we're still using the same data for this cell,
+                        // set imageView's image to the downloaded image
+                        if let currentData = self.data {
+                            if currentPhotoID == currentData.id {
+                                self.imageView.image = image
+                            }
+                        }
+                    }
+                    }.resume()
             }
         }
     }
