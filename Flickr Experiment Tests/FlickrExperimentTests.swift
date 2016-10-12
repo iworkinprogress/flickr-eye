@@ -42,6 +42,8 @@ class FlickrExperimentTests: XCTestCase {
             asyncExpectation.fulfill()
         }
         
+        // Wait 5 seconds and then fail if expectation is not fulfilled
+        // Could be Internet down or Flickr API not responding
         waitForExpectations(timeout: 5) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
@@ -50,7 +52,7 @@ class FlickrExperimentTests: XCTestCase {
     }
     
     func testCreatePhotoDataFromDictionary() {
-        let dictionary = ["id" : "123456789", "title" : "Test Title", "secret" : "Test-Secret", "farm" : 10, "server" : "Test-Server", "ownername" : "Steven Baughman", "datetaken" : "1983-08-21 01:23:45"] as [String : Any]
+        let dictionary = ["id" : "123456789", "title" : "Test Title", "secret" : "Test-Secret", "farm" : 10, "server" : "Test-Server", "ownername" : "Steven Baughman", "datetaken" : "1983-08-21 01:23:45", "views" : "33"] as [String : Any]
         let photoData = FlickrPhotoData(with: dictionary as NSDictionary)
         
         // Test that FlickrPhotoData has valid values
@@ -64,7 +66,9 @@ class FlickrExperimentTests: XCTestCase {
         XCTAssert(data.farm != nil)
         XCTAssert(data.server != nil)
         XCTAssert(data.author != nil)
+        XCTAssert(data.views != nil)
         XCTAssert(data.date != nil)
+        XCTAssert(data.dateAsString().characters.count > 0)
         XCTAssert(data.dateAsString() != "Unknown")
         XCTAssert(data.thumbnailURL() != nil)
         XCTAssert(data.imageURL() != nil)

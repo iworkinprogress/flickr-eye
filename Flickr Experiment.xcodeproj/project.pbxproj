@@ -13,6 +13,7 @@
 		24401B741DAE961D00463201 /* FlickrPhotoImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B731DAE961D00463201 /* FlickrPhotoImageCollectionViewCell.swift */; };
 		24401B761DAE963200463201 /* FlickrPhotoDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B751DAE963200463201 /* FlickrPhotoDetailsCollectionViewCell.swift */; };
 		24401B781DAE964E00463201 /* FlickrPhotoCommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B771DAE964E00463201 /* FlickrPhotoCommentCollectionViewCell.swift */; };
+		24401B791DAEAB6900463201 /* FlickrPhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B6D1DAE801600463201 /* FlickrPhotoComment.swift */; };
 		24A25D641DAC93990081E344 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F81DAC739600212948 /* ImageCache.swift */; };
 		24A25D651DAC93990081E344 /* FlickrPhotoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42F01DAC5FB900212948 /* FlickrPhotoData.swift */; };
 		24A25D661DAC93990081E344 /* FlickrPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42ED1DAC4F2500212948 /* FlickrPhotoCollectionViewCell.swift */; };
@@ -380,6 +381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24401B791DAEAB6900463201 /* FlickrPhotoComment.swift in Sources */,
 				2428F8F61DADC26C00E83F23 /* FlickrExperimentTests.swift in Sources */,
 				24EB42FA1DAC739600212948 /* ImageCache.swift in Sources */,
 				24EB42E81DAC394C00212948 /* FlickrAPI.swift in Sources */,
