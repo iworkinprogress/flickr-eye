@@ -69,7 +69,6 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     //MARK: - Zoom
     func zoomOut(width:CGFloat) {
         self.isZoomedIn = false
-        self.imageView.contentMode = .scaleAspectFill
         self.imageView.backgroundColor = UIColor(red: 0.15, green: 0.17, blue: 0.21, alpha: 1.0)
         if let thumbnailURL = self.data?.thumbnailURL() {
             self.downloadedFrom(url: thumbnailURL)
@@ -83,6 +82,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
             self.imageViewHeight.constant = width
         }
         
+        
         // disable scrollview because we're only showing thumbnail when zoomed out
         self.scrollView.isScrollEnabled = false
         self.scrollView.isUserInteractionEnabled = false
@@ -92,16 +92,15 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.hideLabels()
     }
     
-    func zoomIn(width:CGFloat) {
+    func zoomIn(size:CGSize) {
         self.isZoomedIn = true
-        self.imageView.contentMode = .scaleAspectFit
         self.imageView.backgroundColor = .black
         if let imageURL = self.data?.imageURL() {
             self.downloadedFrom(url: imageURL)
         }
         
-        // Update views for current size
-        self.updateContraints(for:self.bounds.size)
+        // Update Constraints
+        self.updateContraints(for: size)
         
         // Enable Scroll view incase comments require scrolling
         self.scrollView.isScrollEnabled = true
@@ -130,13 +129,11 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         } else {
             // Offset height of status bar when zoomed in
             // Should be able to get 20 dynamically..but isn't right value during rotaiton...
-            var height:CGFloat = 20
+            var height:CGFloat = UIApplication.shared.statusBarFrame.size.height
             // also add navigation bar height
-//            if let rootNavigationVC = self.window?.rootViewController as? UINavigationController {
-//                height += rootNavigationVC.navigationBar.bounds.size.height
-//            }
-            // The above doesn't work during rotation
-            height += 44
+            if let rootNavigationVC = self.window?.rootViewController as? UINavigationController {
+                height += rootNavigationVC.navigationBar.bounds.size.height
+            }
             self.topPadding.constant = height
         }
 

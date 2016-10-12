@@ -55,29 +55,51 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     func zoomIn() {
         if let collectionView = self.collectionView {
             self.isZoomedIn = true
-            collectionView.setCollectionViewLayout(self.zoomedInLayout, animated: true)
             collectionView.isPagingEnabled = true
+            
+            var viewsToAnimate = [UIView]()
             for cell in collectionView.visibleCells {
                 if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
-                    flickrCell.zoomIn(width:self.zoomedInLayout.itemSize.width)
+                    flickrCell.zoomIn(size:self.zoomedInLayout.itemSize)
+                    viewsToAnimate.append(flickrCell)
                 }
             }
+            
+            UIView.animate(withDuration: 0.4, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                collectionView.collectionViewLayout = self.zoomedInLayout
+                for view in viewsToAnimate {
+                    view.layoutIfNeeded()
+                }
+            }, completion: nil)
+            
+            self.navigationController?.setNavigationBarHidden(self.view.bounds.size.width > self.view.bounds.size.height, animated: true)
+            
             self.navigationItem.rightBarButtonItem = self.backButton
             // only show navigation bar if portrait
-            self.navigationController?.setNavigationBarHidden(self.view.bounds.size.width > self.view.bounds.size.height, animated: true)
+            
         }
     }
     
     func zoomOut() {
         if let collectionView = self.collectionView {
             self.isZoomedIn = false
-            collectionView.setCollectionViewLayout(self.zoomedOutLayout, animated: true)
             collectionView.isPagingEnabled = false
+            
+            var viewsToAnimate = [UIView]()
             for cell in collectionView.visibleCells {
                 if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
                     flickrCell.zoomOut(width:self.zoomedOutLayout.itemSize.width)
+                    viewsToAnimate.append(flickrCell)
                 }
             }
+            
+            UIView.animate(withDuration: 0.4, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                collectionView.collectionViewLayout = self.zoomedOutLayout
+                for view in viewsToAnimate {
+                    view.layoutIfNeeded()
+                }
+            }, completion: nil)
+            
             self.navigationItem.rightBarButtonItem = nil
             self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
@@ -109,7 +131,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kFlickrPhotoCellIdentifier, for: indexPath) as! FlickrPhotoCollectionViewCell
         cell.configure(with:self.viewModel.data(at:indexPath.row), at:indexPath.row, isZoomedIn: self.isZoomedIn)
         if self.isZoomedIn {
-            cell.zoomIn(width:self.zoomedInLayout.itemSize.width)
+            cell.zoomIn(size:self.zoomedInLayout.itemSize)
         } else {
             cell.zoomOut(width: self.zoomedOutLayout.itemSize.width)
         }
@@ -169,15 +191,20 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     //MARK: - Rotation
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.update(layout:self.zoomedOutLayout, width:size.width, columns:kPhotoColumns)
-        self.zoomedInLayout.itemSize = size
-        if self.isZoomedIn {
-            self.collectionView?.contentOffset = CGPoint(x:self.currentPage * size.width, y:0)
-            self.showCommentsForVisibleCells()
-            self.updateConstraintsForVisibleCells(for: size)
-            // Hide navigation bar if zoomed in and landscape
-            self.navigationController?.setNavigationBarHidden(size.width > size.height, animated: false)
-        } else {
-            self.zoomOut()
+        coordinator.animate(alongsideTransition: { (context) in
+            self.zoomedInLayout.itemSize = size
+            if self.isZoomedIn {
+                self.collectionView?.contentOffset = CGPoint(x:self.currentPage * size.width, y:0)
+                self.updateConstraintsForVisibleCells(for: size)
+                // Hide navigation bar if zoomed in and landscape
+                self.navigationController?.setNavigationBarHidden(size.width > size.height, animated: false)
+            } else {
+                self.zoomOut()
+            }
+        }) { (context) in
+            if self.isZoomedIn {
+                self.showCommentsForVisibleCells()
+            }
         }
     }
 }
