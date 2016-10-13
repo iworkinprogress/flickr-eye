@@ -2,6 +2,10 @@
 
 Photo browser that is populated by Interesting Photos from Flickr.
 
+## Screenshots
+
+<img src="/Screenshots/grid.png" alt="Photo Grid" width="400" /> <img src="/Screenshots/photo.png" alt="Photo Details" width="400" />
+
 ## Motivation
 
 Playground for UI ideas. Starting point for future photo browsers.
