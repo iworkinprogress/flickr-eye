@@ -8,7 +8,8 @@
 
 import UIKit
 
-let kPhotoColumns:CGFloat = 3.0
+let kPhotoColumnsPortrait:CGFloat = 3.0
+let kPhotoColumnsLandscape:CGFloat = 5.0
 let kPhotoPadding:CGFloat = 1.0
 let kFlickrPhotoCellIdentifier = "FlickrPhotoCell"
 
@@ -38,7 +39,8 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     
     lazy var zoomedOutLayout:UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
-        self.update(layout:layout, width:self.view.bounds.size.width, columns:kPhotoColumns)
+        let columns = self.view.bounds.size.width > self.view.bounds.size.height ? kPhotoColumnsLandscape : kPhotoColumnsPortrait;
+        self.update(layout:layout, width:self.view.bounds.size.width, columns:columns)
         layout.minimumLineSpacing = kPhotoPadding
         layout.minimumInteritemSpacing = kPhotoPadding
         layout.scrollDirection = .vertical
@@ -189,7 +191,9 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     
     //MARK: - Rotation
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        self.update(layout:self.zoomedOutLayout, width:size.width, columns:kPhotoColumns)
+        let columns = size.width > size.height ? kPhotoColumnsLandscape : kPhotoColumnsPortrait
+        self.update(layout:self.zoomedOutLayout, width:size.width, columns:columns)
+        
         coordinator.animate(alongsideTransition: { (context) in
             self.zoomedInLayout.itemSize = size
             if self.isZoomedIn {
