@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2428F8F61DADC26C00E83F23 /* FlickrExperimentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42CC1DAC382000212948 /* FlickrExperimentTests.swift */; };
-		24401B6E1DAE801600463201 /* FlickrCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B6B1DAE801600463201 /* FlickrCommentView.swift */; };
 		24401B701DAE801600463201 /* FlickrPhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B6D1DAE801600463201 /* FlickrPhotoComment.swift */; };
 		24401B791DAEAB6900463201 /* FlickrPhotoComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24401B6D1DAE801600463201 /* FlickrPhotoComment.swift */; };
 		24401B7A1DAEBB1800463201 /* FlickrPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB42ED1DAC4F2500212948 /* FlickrPhotoCollectionViewCell.swift */; };
@@ -51,7 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		24401B6B1DAE801600463201 /* FlickrCommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlickrCommentView.swift; path = "Flickr Experiment/FlickrCommentView.swift"; sourceTree = SOURCE_ROOT; };
 		24401B6D1DAE801600463201 /* FlickrPhotoComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlickrPhotoComment.swift; path = "Flickr Experiment/FlickrPhotoComment.swift"; sourceTree = SOURCE_ROOT; };
 		24A25D4A1DAC91D30081E344 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Flickr Experiment/Info.plist"; sourceTree = SOURCE_ROOT; };
 		24A25D721DAC94D50081E344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Flickr Experiment/Base.lproj/Main.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -97,22 +95,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		24401B661DAE7EF500463201 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				24401B711DAE802100463201 /* Comment */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		24401B711DAE802100463201 /* Comment */ = {
-			isa = PBXGroup;
-			children = (
-				24401B6B1DAE801600463201 /* FlickrCommentView.swift */,
-			);
-			name = Comment;
-			sourceTree = "<group>";
-		};
 		24EB42A81DAC382000212948 = {
 			isa = PBXGroup;
 			children = (
@@ -138,7 +120,6 @@
 			children = (
 				24EB42F71DAC738500212948 /* Cache */,
 				24EB42EF1DAC5F9E00212948 /* Data */,
-				24401B661DAE7EF500463201 /* Views */,
 				24EB42EC1DAC4F0700212948 /* Cells */,
 				24EB42E91DAC4C9E00212948 /* Collection View */,
 				24EB42E51DAC391000212948 /* API */,
@@ -354,7 +335,6 @@
 				24A25D651DAC93990081E344 /* FlickrPhotoData.swift in Sources */,
 				24A25D661DAC93990081E344 /* FlickrPhotoCollectionViewCell.swift in Sources */,
 				24A25D671DAC93990081E344 /* FlickrPhotosCollectionViewController.swift in Sources */,
-				24401B6E1DAE801600463201 /* FlickrCommentView.swift in Sources */,
 				24401B701DAE801600463201 /* FlickrPhotoComment.swift in Sources */,
 				24A25D681DAC93990081E344 /* FlickrPhotosCollectionViewModel.swift in Sources */,
 				24A25D691DAC93990081E344 /* FlickrAPI.swift in Sources */,
