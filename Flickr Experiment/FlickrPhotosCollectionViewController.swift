@@ -140,11 +140,13 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = self.collectionView?.cellForItem(at: indexPath) as? FlickrPhotoCollectionViewCell {
-            cell.showComments()
+        if !self.isZoomedIn {
+            if let cell = self.collectionView?.cellForItem(at: indexPath) as? FlickrPhotoCollectionViewCell {
+                cell.showComments()
+            }
+            self.zoomIn()
+            self.currentPage = CGFloat(indexPath.row)
         }
-        self.zoomIn()
-        self.currentPage = CGFloat(indexPath.row)
     }
     
     //MARK: - Scroll View
@@ -205,6 +207,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
                 self.zoomOut()
             }
         }) { (context) in
+            // Completion
             if self.isZoomedIn {
                 self.showCommentsForVisibleCells()
             }
