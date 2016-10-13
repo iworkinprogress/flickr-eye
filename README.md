@@ -1,6 +1,6 @@
 ## Synopsis
 
-Photo browser that is populated by Interesting Photos from Flickr
+Photo browser that is populated by Interesting Photos from Flickr.
 
 ## Motivation
 
