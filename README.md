@@ -6,9 +6,28 @@ Photo browser that is populated by Interesting Photos from Flickr
 
 Playground for UI ideas. Starting point for future photo browsers.
 
+## Todo
+
+Convert Photo scroll view to collection view
+- Can shrink photo and keep on screen when scrolling
+- Will improve performance of comments
+- Allows for others types of cells (add comment, related photos, etc)
+
+Comments
+- Display HTML text
+- Clearer UI
+
+Grid
+- Pinch zoom in
+
+Photo
+- Pinch zoom out
+- Pinch zoom in to photo
+- Tappable author name (goes to author profile page on Flickr)
+
 ## Installation
 
-No 3rd party libraries are used. Just open the Xcode project and build.
+Just open the Xcode project and build. No 3rd party libraries are used.
 
 ## Tests
 
