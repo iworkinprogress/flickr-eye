@@ -12,11 +12,14 @@ let kFlickrPhotosPerPage:Int = 100
 
 class FlickrAPI: NSObject {
     
+    enum FlickrMethod:String {
+        case recent = "flickr.photos.getRecent"
+        case interesting = "flickr.interestingness.getList"
+        case details = "flickr.photos.getInfo"
+        case comments = "flickr.photos.comments.getList"
+    }
+    
     let kFlickrPath = "https://api.flickr.com/services/rest/?method="
-    let kFlickrGetPhotosMethod = "flickr.photos.getRecent"
-    let kFlickrGetInterestingPhotosMethod = "flickr.interestingness.getList"
-    let kFlickrGetDetailsMethod = "flickr.photos.getInfo"
-    let kFlickrGetCommentsMethod = "flickr.photos.comments.getList"
     let kFlickrKey = "8617b22260a92e5550bddcdcfec95f7f"
     let kFlickrFormat = "json"
     
@@ -55,7 +58,7 @@ class FlickrAPI: NSObject {
         }
     }
     
-    //MARK: - Get Details
+    //MARK: - Comments
     func fetchComments(data:FlickrPhotoData, completion: @escaping (_ photoComments:[NSDictionary]?) -> Void) {
         if let flickrURL = URL(string: self.commentsPath(for:data)) {
             URLSession.shared.dataTask(with: flickrURL, completionHandler: { (data, response, error) in
@@ -85,35 +88,32 @@ class FlickrAPI: NSObject {
     }
     
     //MARK: - Paths
-    func path(for page:NSInteger) -> String {
+    func path(for method:FlickrMethod) -> String {
         var path = "\(kFlickrPath)"
-        path += "&method=\(kFlickrGetInterestingPhotosMethod)"
-        path += "&page=\(page)"
-        path += "&per_page=\(kFlickrPhotosPerPage)"
+        path += "&method=\(method.rawValue)"
         path += "&api_key=\(kFlickrKey)"
         path += "&format=\(kFlickrFormat)"
         path += "&nojsoncallback=1"
+        return path
+
+    }
+    func path(for page:NSInteger) -> String {
+        var path = self.path(for:.interesting)
+        path += "&page=\(page)"
+        path += "&per_page=\(kFlickrPhotosPerPage)"
         path += "&extras=date_taken,owner_name,views,tags,description"
         return path
     }
     
     func detailsPath(for data:FlickrPhotoData) -> String {
-        var path = "\(kFlickrPath)"
-        path += "&method=\(kFlickrGetDetailsMethod)"
+        var path = self.path(for:.details)
         path += "&photo_id=\(data.id!)"
-        path += "&api_key=\(kFlickrKey)"
-        path += "&format=\(kFlickrFormat)"
-        path += "&nojsoncallback=1"
         return path
     }
     
     func commentsPath(for data:FlickrPhotoData) -> String {
-        var path = "\(kFlickrPath)"
-        path += "&method=\(kFlickrGetCommentsMethod)"
+        var path = self.path(for:.comments)
         path += "&photo_id=\(data.id!)"
-        path += "&api_key=\(kFlickrKey)"
-        path += "&format=\(kFlickrFormat)"
-        path += "&nojsoncallback=1"
         return path
     }
 }
