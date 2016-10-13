@@ -69,19 +69,17 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
     //MARK: - Zoom
     func zoomOut(width:CGFloat) {
         self.isZoomedIn = false
+        self.imageView.contentMode = .scaleAspectFill
         self.imageView.backgroundColor = UIColor(red: 0.15, green: 0.17, blue: 0.21, alpha: 1.0)
         if let thumbnailURL = self.data?.thumbnailURL() {
             self.downloadedFrom(url: thumbnailURL)
         }
         
-        // Update padding to be flush with top of screen
+        // Update padding to be flush with top of view
         self.topPadding.constant = 0
         
         // make ImageView a square
-        if width > 0 {
-            self.imageViewHeight.constant = width
-        }
-        
+        self.imageViewHeight.constant = width
         
         // disable scrollview because we're only showing thumbnail when zoomed out
         self.scrollView.isScrollEnabled = false
@@ -100,7 +98,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         }
         
         // Update Constraints
-        self.updateContraints(for: size)
+        self.updateZoomedInContraints(for: size)
         
         // Enable Scroll view incase comments require scrolling
         self.scrollView.isScrollEnabled = true
@@ -114,7 +112,9 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.clearComments()
     }
     
-    func updateContraints(for size:CGSize) {
+    func updateZoomedInContraints(for size:CGSize) {
+        self.imageView.contentMode = size.width > size.height ? .scaleAspectFit : .scaleAspectFill
+        
         // Update top padding to be under the navigation bar if in portrait
         self.updateTopPadding(size:size)
         
@@ -162,6 +162,7 @@ class FlickrPhotoCollectionViewCell: UICollectionViewCell {
         self.dateLine.isHidden = !show
         self.dateLine2.isHidden = !show
         self.commentsTextView.isHidden = !show
+        self.viewsLabel.isHidden = !show
     }
     
     //MARK: - Comments

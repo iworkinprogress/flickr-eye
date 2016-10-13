@@ -65,14 +65,13 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
                 }
             }
             
-            UIView.animate(withDuration: 0.4, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseOut], animations: {
                 collectionView.collectionViewLayout = self.zoomedInLayout
                 for view in viewsToAnimate {
                     view.layoutIfNeeded()
                 }
+                self.navigationController?.setNavigationBarHidden(self.view.bounds.size.width > self.view.bounds.size.height, animated: false)
             }, completion: nil)
-            
-            self.navigationController?.setNavigationBarHidden(self.view.bounds.size.width > self.view.bounds.size.height, animated: true)
             
             self.navigationItem.rightBarButtonItem = self.backButton
             // only show navigation bar if portrait
@@ -93,15 +92,15 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
                 }
             }
             
-            UIView.animate(withDuration: 0.4, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: 0.35, delay: 0.0, options: [.curveEaseOut], animations: {
                 collectionView.collectionViewLayout = self.zoomedOutLayout
                 for view in viewsToAnimate {
                     view.layoutIfNeeded()
                 }
+                self.navigationController?.setNavigationBarHidden(true, animated: false)
             }, completion: nil)
             
             self.navigationItem.rightBarButtonItem = nil
-            self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }
     
@@ -178,11 +177,11 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
         }
     }
     
-    func updateConstraintsForVisibleCells(for size:CGSize) {
+    func updateZoomedInConstraintsForVisibleCells(for size:CGSize) {
         if self.isZoomedIn {
             for cell in self.collectionView!.visibleCells {
                 if let flickrCell = cell as? FlickrPhotoCollectionViewCell {
-                    flickrCell.updateContraints(for:size)
+                    flickrCell.updateZoomedInContraints(for:size)
                 }
             }
         }
@@ -195,7 +194,7 @@ class FlickrPhotosCollectionViewController: UICollectionViewController {
             self.zoomedInLayout.itemSize = size
             if self.isZoomedIn {
                 self.collectionView?.contentOffset = CGPoint(x:self.currentPage * size.width, y:0)
-                self.updateConstraintsForVisibleCells(for: size)
+                self.updateZoomedInConstraintsForVisibleCells(for: size)
                 // Hide navigation bar if zoomed in and landscape
                 self.navigationController?.setNavigationBarHidden(size.width > size.height, animated: false)
             } else {

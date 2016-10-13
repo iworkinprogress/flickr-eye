@@ -101,7 +101,7 @@
                                             <constraints>
                                                 <constraint firstItem="PIi-cS-KbT" firstAttribute="top" secondItem="aQn-WS-M9V" secondAttribute="bottom" constant="-31" id="1MQ-Gj-vRW"/>
                                                 <constraint firstAttribute="bottom" secondItem="jQj-sd-QLI" secondAttribute="bottom" constant="21" id="6GJ-ea-b8X"/>
-                                                <constraint firstAttribute="trailing" secondItem="PIi-cS-KbT" secondAttribute="trailing" constant="8" id="CI7-0p-rgw"/>
+                                                <constraint firstAttribute="trailing" secondItem="PIi-cS-KbT" secondAttribute="trailing" constant="20" id="CI7-0p-rgw"/>
                                                 <constraint firstItem="UEl-bg-bub" firstAttribute="top" secondItem="aQn-WS-M9V" secondAttribute="bottom" constant="3" id="EyE-ND-Twk"/>
                                                 <constraint firstItem="UEl-bg-bub" firstAttribute="leading" secondItem="gQi-AZ-pdU" secondAttribute="leading" constant="10" id="Jwj-lS-Tmm"/>
                                                 <constraint firstAttribute="trailing" secondItem="ioc-fv-hS2" secondAttribute="trailing" id="Vcj-Jl-EHo"/>
