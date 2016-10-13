@@ -51,9 +51,35 @@ class FlickrExperimentTests: XCTestCase {
         }
     }
     
+    func testLoadFlickrComments() {
+        // We need to wait for response from FlickrAPI before deciding if this test passes
+        let asyncExpectation = expectation(description: "FlickrAPI fetches a list ofcomments and runs the callback closure with a valid comments array of dictionary objects")
+        
+        let photoData = FlickrPhotoData(with: self.fauxFlickrDictionary())
+        
+        FlickrAPI.shared.fetchComments(data: photoData, completion: { (comments) in
+            if let validComments = comments {
+                for commentDictionary in validComments {
+                    let commentData = FlickrPhotoComment(with: commentDictionary)
+                    self.validate(comment:commentData)
+                }
+            } else {
+                XCTFail("Could not load comments from Flickr API")
+            }
+            asyncExpectation.fulfill()
+        })
+        
+        // Wait 5 seconds and then fail if expectation is not fulfilled
+        // Could be Internet down or Flickr API not responding
+        waitForExpectations(timeout: 5) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+    
     func testCreatePhotoDataFromDictionary() {
-        let dictionary = ["id" : "123456789", "title" : "Test Title", "secret" : "Test-Secret", "farm" : 10, "server" : "Test-Server", "ownername" : "Steven Baughman", "datetaken" : "1983-08-21 01:23:45", "views" : "33"] as [String : Any]
-        let photoData = FlickrPhotoData(with: dictionary as NSDictionary)
+        let photoData = FlickrPhotoData(with: self.fauxFlickrDictionary())
         
         // Test that FlickrPhotoData has valid values
         self.validate(data: photoData)
@@ -73,5 +99,14 @@ class FlickrExperimentTests: XCTestCase {
         XCTAssert(data.thumbnailURL() != nil)
         XCTAssert(data.imageURL() != nil)
     }
-    
+
+    func validate(comment:FlickrPhotoComment) {
+        XCTAssert(comment.author != nil)
+        XCTAssert(comment.date != nil)
+        XCTAssert(comment.comment != nil)
+    }
+
+    func fauxFlickrDictionary() -> NSDictionary {
+        return ["id" : "30217110606", "title" : "Test Title", "secret" : "Test-Secret", "farm" : 10, "server" : "Test-Server", "ownername" : "Steven Baughman", "datetaken" : "1983-08-21 01:23:45", "views" : "33"] as NSDictionary
+    }
 }
