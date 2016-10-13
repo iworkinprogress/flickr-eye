@@ -6,6 +6,10 @@ Photo browser that is populated by Interesting Photos from Flickr.
 
 Playground for UI ideas. Starting point for future photo browsers.
 
+## Screenshots
+
+<img src="/Screenshots/grid.png" alt="Photo Grid" width="400" /> <img src="/Screenshots/photo.png" alt="Photo Details" width="400" />
+
 ## Todo
 
 Convert Photo scroll view to collection view
@@ -31,7 +35,7 @@ Just open the Xcode project and build. No 3rd party libraries are used.
 
 ## Tests
 
-Uses XCTests and XCUITests
+Uses XCTest and XCUITest.
 
 ## License
 
